@@ -1,0 +1,59 @@
+p {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #4D4D4D;
+    text-align: center;
+}
+.product_card {
+    margin-left:10px;
+    margin-top: 10px;
+    width: 286px;
+    height: 385px;
+    border: 1px solid #D9D9D9;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    img {
+        margin-bottom: 10px;
+    }
+    .stars {
+        display: flex;
+    }
+    .star_wrapper {
+        display: flex;
+        .star-text {
+            font-weight: 600;
+            color: #5D71DD;
+            margin-left: 5px;
+        }
+    }
+    .respond {
+        margin-left: 10px;
+    }
+    .sum {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 20px;
+    color: #4D4D4D;
+    text-align: center;
+    margin-top: 10px;
+    }
+    button {
+         width: 246px;
+         height: 45px;
+         background: #5D71DD;
+         border-radius: 4px;
+         border: none;
+         color: white;
+         margin-top: 17px;
+         transition-duration: 1s;
+         &:hover {
+            transition-duration: 1s;
+            background-color: #263480;
+         }
+    }
+}
