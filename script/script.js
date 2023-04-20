@@ -3,12 +3,45 @@ let buttons = document.querySelectorAll("button")
 let cart = document.querySelector("#cart")
 let deleteEl = document.querySelector("#delete")
 let headerBlock = document.querySelector("#headerBlock")
+let clocks = document.querySelector("#clock")
+
+//Format time
+let formatTime = (timeObj) => {
+  if (timeObj.hours < 10) { 
+      timeObj.hours = `0${timeObj.hours}`
+  }
+  if (timeObj.minutes < 10) { 
+      timeObj.minutes = `0${timeObj.minutes}`
+  }
+  if (timeObj.seconds < 10) { 
+      timeObj.seconds = `0${timeObj.seconds}`
+  }
+  return timeObj
+}
+// Get user's time
+let getTime = () => {
+  let timeNow = new Date()
+  timeNow = {
+      hours: timeNow.getHours(),
+      minutes: timeNow.getMinutes(),
+      seconds: timeNow.getSeconds()
+  }
+  return formatTime(timeNow)
+}
+
+const setTime = () => {
+  let time = getTime()
+  clocks.innerHTML = `${time.hours}:${time.minutes}:${time.seconds}`, 1000
+}
+
+setInterval(setTime, 1000)
 
 //Create an empty object to save information in it
 let saveInf = {
   name: undefined,
   age: undefined,
   mail: undefined,
+  time: undefined
 }
 
 //Create prompts which will take information from user
@@ -33,14 +66,15 @@ buttons.forEach((btn) => {
           saveInf.name = username
           saveInf.age = age
           saveInf.mail = mail
+          saveInf.time = formatTime(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`)
         }
+
         //Create a "if" which check all information which we need
         if (username.length > 0 && isNaN(username) == true && age.length > 0 && isNaN(age) == false && mail.length > 10 && mail.endsWith("@gmail.com")) {
-
           if (saveInf.name == undefined) {
             headerBlock.innerHTML = `<p>Поки у вас немає профілю ${saveInf}</p>`
           } else {
-            headerBlock.innerHTML = `<p>Username: ${saveInf.name} <br> Age: ${saveInf.age} <br> Email: ${saveInf.mail}</p>`
+            headerBlock.innerHTML = `<p>Username: ${saveInf.name} <br> Age: ${saveInf.age} <br> Email: ${saveInf.mail}</p> <br> Time of create account: ${saveInf.time}`
           }
 
           //Add element to the cart when user click on the button
@@ -74,8 +108,10 @@ buttons.forEach((btn) => {
             let productCard = deleteButton.parentNode
             productCard.parentNode.removeChild(productCard)
         
-           //Remove attribute "disabled" to do button active
-           btn.removeAttribute("disabled")
+              //Make buttons active
+              buttons.forEach((btn) => {
+                btn.removeAttribute("disabled");
+                 });
             })
           })
 
@@ -85,6 +121,7 @@ buttons.forEach((btn) => {
             name: undefined,
             age: undefined,
             mail: undefined,
+            time: undefined
           }
         }
       }
@@ -94,16 +131,16 @@ buttons.forEach((btn) => {
 })
 
 //Function which will delete all element in the cart and make buttons active when user clicks
-deleteEl.onclick = () => {
+deleteEl.addEventListener( "click", () => {
 
   //Delete all elements from the cart
   cart.innerHTML = ""
 
   //Make buttons active
-  buttons.forEach((btn) => {
-    btn.removeAttribute("disabled");
-  });
-}
+    buttons.forEach((btn) => {
+      btn.removeAttribute("disabled");
+    });
+})
 
 //Change theme
 
@@ -113,7 +150,6 @@ let theme = document.querySelector("#theme")
 let lorems = document.querySelectorAll(".lorem")
 let header = document.querySelector("header")
 let main = document.querySelector("main")
-let product = document.querySelector(".product_card")
 let respond = document.querySelector(".respond")
 let sum = document.querySelector(".sum")
 
@@ -139,9 +175,6 @@ const changeTheme = () => {
 
   //Main
   main.classList.add("dark_main")
-
-  //Product card
-  product.classList.replace("product_card", "dark_product_card")
     
   //Respond
   respond.classList.replace("respond", "dark_p")
@@ -167,9 +200,6 @@ const changeTheme = () => {
 
     //Main
     main.classList.remove("dark_main")
-  
-    //Product
-    product.classList.replace("dark_product_card", "product_card")
       
     //Respond
     respond.classList.replace("dark_p", "respond")
