@@ -4,20 +4,23 @@ let cart = document.querySelector("#cart")
 let deleteEl = document.querySelector("#delete")
 let headerBlock = document.querySelector("#headerBlock")
 let clocks = document.querySelector("#clock")
+let animate = document.querySelector("#animate")
+let input = document.querySelector("#input")
 
 //Format time
-let formatTime = (timeObj) => {
-  if (timeObj.hours < 10) { 
-      timeObj.hours = `0${timeObj.hours}`
+  const formatTime = (timeObj) => {
+    if (timeObj.hours < 10) { 
+        timeObj.hours = `0${timeObj.hours}`
+    }
+    if (timeObj.minutes < 10) { 
+        timeObj.minutes = `0${timeObj.minutes}`
+    }
+    if (timeObj.seconds < 10) { 
+        timeObj.seconds = `0${timeObj.seconds}`
+    }
+    return timeObj
   }
-  if (timeObj.minutes < 10) { 
-      timeObj.minutes = `0${timeObj.minutes}`
-  }
-  if (timeObj.seconds < 10) { 
-      timeObj.seconds = `0${timeObj.seconds}`
-  }
-  return timeObj
-}
+  
 // Get user's time
 let getTime = () => {
   let timeNow = new Date()
@@ -37,6 +40,12 @@ const setTime = () => {
 setInterval(setTime, 1000)
 
 //Create an empty object to save information in it
+let elementsStore = [
+  {
+    id:1
+  }
+]
+
 let saveInf = {
   name: undefined,
   age: undefined,
@@ -46,6 +55,37 @@ let saveInf = {
 
 //Create prompts which will take information from user
 let username, age, mail
+
+const generateItem = (elementsStore) => {
+  elementsStore.forEach((element) => {
+//Add element to the cart when user click on the button
+let timeNow = getTime()
+cart.innerHTML += `
+<div id="${element.id}" class="product_card changeColor">
+  <img src="../img/macbook.png" alt="">
+  <p>Додано о ${timeNow.hours}:${timeNow.minutes}:${timeNow.seconds}</p>
+  <p>Ноутбук Apple MacBook Pro 16 TB i7 2.6/16/512 SSD SG MVVJ2RU/A</p>
+  <div class="stars">
+    <div class="star_wrapper">
+      <img src="../img/Star 1.svg" alt="">
+      <p class="star-text">4,5</p>
+    </div>
+    <p class="respond">83 відгуки</p>
+  </div>
+  <p>Артикул: 879876</p>
+  <p>В наявності: 13</p>
+  <p class="sum">85499,41</p>
+  <button class="delete">Видалити з кошику</button>
+</div>
+`
+
+let products = document.querySelectorAll(".changeColor")
+
+products.forEach((product) => {
+  product.style.backgroundColor = input.value
+})
+  })
+}
 
 //Create a function which will add the product card to cart when user clicks
 buttons.forEach((btn) => {
@@ -66,7 +106,7 @@ buttons.forEach((btn) => {
           saveInf.name = username
           saveInf.age = age
           saveInf.mail = mail
-          saveInf.time = formatTime(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`)
+          saveInf.time = getTime()
         }
 
         //Create a "if" which check all information which we need
@@ -74,46 +114,23 @@ buttons.forEach((btn) => {
           if (saveInf.name == undefined) {
             headerBlock.innerHTML = `<p>Поки у вас немає профілю ${saveInf}</p>`
           } else {
-            headerBlock.innerHTML = `<p>Username: ${saveInf.name} <br> Age: ${saveInf.age} <br> Email: ${saveInf.mail}</p> <br> Time of create account: ${saveInf.time}`
+            headerBlock.innerHTML = `<p>Username: ${saveInf.name} <br> Age: ${saveInf.age} <br> Email: ${saveInf.mail}</p> <br> Time of create account: ${saveInf.time.hours}:${saveInf.time.minutes}:${saveInf.time.seconds}`
           }
 
-          //Add element to the cart when user click on the button
-          cart.innerHTML += `
-            <div class="product_card">
+          animate.classList.replace("none-animate", "animate")
 
-              <img src="../img/macbook.png" alt="">
-              <p>Ноутбук Apple MacBook Pro 16 TB i7 2.6/16/512 SSD SG MVVJ2RU/A</p>
-              <div class="stars">
-                <div class="star_wrapper">
-                  <img src="../img/Star 1.svg" alt="">
-                  <p class="star-text">4,5</p>
-                </div>
-                <p class="respond">83 відгуки</p>
-              </div>
-              <p>Артикул: 879876</p>
-              <p>В наявності: 13</p>
-              <p class="sum">85499,41</p>
-              <button class="delete">Видалити з кошику</button>
-            </div>
-          `
           //Make button inactive when user clicks on it
           btn.setAttribute('disabled', true)
 
-          //Save button from .innerHTML
-          let deleteButtons = document.querySelectorAll(".delete")
-
-          deleteButtons.forEach((deleteButton) => {
-            //Delete parent element when user clicks on delete button
-            deleteButton.addEventListener("click", () => {
-            let productCard = deleteButton.parentNode
-            productCard.parentNode.removeChild(productCard)
-        
-              //Make buttons active
-              buttons.forEach((btn) => {
-                btn.removeAttribute("disabled");
-                 });
-            })
-          })
+            const addNewCard = () => {
+              let newCard = {
+                id:elementsStore[elementsStore.length - 1].id + 1,
+                date:getTime()
+              }
+              generateItem(elementsStore)
+            }
+            
+            addNewCard()
 
           break
         } else {

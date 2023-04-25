@@ -57,4 +57,12 @@ p {
 .product_card button:hover {
   transition-duration: 1s;
   background-color: #263480;
+}
+
+.none-animate {
+  display: none;
+}
+
+.animate {
+  display: block;
 }/*# sourceMappingURL=js.css.map */
